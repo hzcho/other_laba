@@ -1,27 +1,32 @@
-package transport;
+package laba4.transport;
 
-import exception.TransportException;
-import exception.TransportRuntimeException;
+import laba3.exception.TransportException;
+import laba3.exception.TransportRuntimeException;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Serializable;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Car implements Transport {
+public class Bicycle implements Transport, Serializable {
     private String model;
     private int price;
     private String[] features;
 
-    public Car(){
+    public Bicycle(){
         model="unknown";
         price=0;
         features=new String[]{ "nothing" };
     }
-    public Car(String model, int price, String[] features){
+    public Bicycle(String model, int price, String[] features){
         this.model=model;
         this.price=price;
         this.features=features;
     }
-    public Car(String model, int price, int arraySize){
+    public Bicycle(String model, int price, int arraySize){
         this.model=model;
         this.price=price;
         this.features=new String[arraySize];
@@ -87,7 +92,7 @@ public class Car implements Transport {
 
     @Override
     public String toString() {
-        return "Car{" +
+        return "Bicycle{" +
                 "model='" + model + '\'' +
                 ", price=" + price +
                 ", features=" + Arrays.toString(features) +
@@ -101,11 +106,56 @@ public class Car implements Transport {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        Car car = (Car) obj;
-        return price == car.price &&
-                Objects.equals(model, car.model) &&
-                Arrays.equals(features, car.features);
+        Bicycle bicycle = (Bicycle) obj;
+        return price == bicycle.price &&
+                Objects.equals(model, bicycle.model) &&
+                Arrays.equals(features, bicycle.features);
+    }
+
+    @Override
+    public void output(OutputStream out) throws IOException {
+        try{
+            StringBuilder dataBuilder = new StringBuilder();
+            dataBuilder.append("Type:").append("Bicycle").append(";");;
+            dataBuilder.append("Model:").append(model).append(";");
+            dataBuilder.append("Price:").append(price).append(";");
+            dataBuilder.append("Features:");
+            for (String feature : features) {
+                dataBuilder.append(feature).append(",");
+            }
+            dataBuilder.append('\n');
+
+            byte[] bytes = dataBuilder.toString().getBytes(StandardCharsets.UTF_8);
+
+            out.write(bytes);
+        }catch (IOException ex){
+            System.out.println(ex.getMessage());
+        }
+        finally {
+            out.close();
+        }
+    }
+
+    @Override
+    public void write(Writer out) throws IOException {
+        try{
+            StringBuilder dataBuilder = new StringBuilder();
+            dataBuilder.append("Type:").append("Bicycle").append(";");;
+            dataBuilder.append("Model:").append(model).append(";");
+            dataBuilder.append("Price:").append(price).append(";");
+            dataBuilder.append("Features:");
+            for (String feature : features) {
+                dataBuilder.append(feature).append(",");
+            }
+            dataBuilder.append('\n');
+
+            out.write(dataBuilder.toString());
+        }catch (IOException ex){
+            System.out.println(ex.getMessage());
+        }
+        finally {
+            out.close();
+        }
     }
 }

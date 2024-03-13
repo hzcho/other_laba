@@ -1,6 +1,8 @@
-import transport.Bicycle;
-import transport.Car;
-import transport.Transport;
+package laba3;
+
+import laba3.transport.Bicycle;
+import laba3.transport.Car;
+import laba3.transport.Transport;
 
 import java.util.ArrayList;
 
@@ -24,7 +26,7 @@ public class Main {
             System.out.println(transport.transportInfo());
         }
 
-        //System.out.println("\n transport with the same result transportInfo");
+        //System.out.println("\n laba3.transport with the same result transportInfo");
         for (int i = 0; i < transports.size(); i++) {
             for (int j = i + 1; j < transports.size(); j++) {
                 if(transports.get(i).transportInfo().equals(transports.get(j).transportInfo())){
